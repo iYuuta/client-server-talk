@@ -1,4 +1,4 @@
-#include "minitalk.h"
+#include "minitalk_bonus.h"
 
 static int	check(int sign)
 {
@@ -35,6 +35,15 @@ int	ft_atoi(const char *str)
 	return (result * sign);
 }
 
+void	recieve_confirmation(int sig)
+{
+	if (sig == SIGUSR1)
+	{
+		ft_printf("Message received\n");
+		exit(0);
+	}
+}
+
 void	send_char(pid_t server_pid, char c)
 {
 	int	bit;
@@ -58,7 +67,11 @@ int	main(int ac, char **av)
 	i = -1;
 	if (ac != 3)
 		return (0);
+	signal(SIGUSR1, recieve_confirmation);
 	while (av[2][++i])
 		send_char(ft_atoi(av[1]), av[2][i]);
 	send_char(ft_atoi(av[1]), '\0');
+	while (1)
+		pause();
+	return (0);
 }
