@@ -11,6 +11,8 @@ void	recieve_sig(int sig, struct __siginfo *info, void *context)
 	bit++;
 	if (bit == 8)
 	{
+		if ((c < 32 || c == 127) || (c >= 0x80 && c <= 0x9F) || (c >= 0xA0 && c <= 0xBF))
+    		c = 0;
 		if (c == '\0')
 		{
 			write(1, "\n", 1);
