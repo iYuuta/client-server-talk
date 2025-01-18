@@ -4,22 +4,29 @@ void	recieve_sig(int sig, struct __siginfo *info, void *context)
 {
 	static int	bit;
 	static int	c;
+	static int	tmp;
 
+	if (tmp != info->si_pid && tmp != 0)
+	{
+		c = 0;
+		tmp = 0;
+		bit = 0;
+	}
 	(void)context;
 	if (sig == SIGUSR1)
 		c |= (0x01 << bit);
 	bit++;
 	if (bit == 8)
 	{
-		if ((c < 32 || c == 127) || (c >= 0x80 && c <= 0x9F) || (c >= 0xA0 && c <= 0xBF))
-    		c = 0;
 		if (c == '\0')
 		{
 			write(1, "\n", 1);
 			kill(info->si_pid, SIGUSR1);
+			tmp = 0;
 		}
 		else
 			write(1, &c, 1);
+		tmp = info->si_pid;
 		bit = 0;
 		c = 0;
 	}
