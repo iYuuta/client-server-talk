@@ -1,4 +1,15 @@
 #include "minitalk_bonus.h"
+void	action(int c, int si_pid, int *tmp)
+{
+	if (c == '\0')
+		{
+			write(1, "\n", 1);
+			kill(si_pid, SIGUSR1);
+			*tmp = 0;
+		}
+	else
+		write(1, &c, 1);
+}
 
 void	recieve_sig(int sig, struct __siginfo *info, void *context)
 {
@@ -18,14 +29,7 @@ void	recieve_sig(int sig, struct __siginfo *info, void *context)
 	bit++;
 	if (bit == 8)
 	{
-		if (c == '\0')
-		{
-			write(1, "\n", 1);
-			kill(info->si_pid, SIGUSR1);
-			tmp = 0;
-		}
-		else
-			write(1, &c, 1);
+		action(c, info->si_pid, &tmp);
 		tmp = info->si_pid;
 		bit = 0;
 		c = 0;
