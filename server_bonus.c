@@ -1,4 +1,8 @@
-#include "minitalk_bonus.h"
+#include <signal.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include "ft_printf/ft_printf.h"
+
 void	action(int c, int si_pid, int *tmp)
 {
 	if (c == '\0')
@@ -36,13 +40,13 @@ void	recieve_sig(int sig, struct __siginfo *info, void *context)
 	}
 }
 
-int	main(void)
+int	main(void) 
 {
 	pid_t				pid;
 	struct sigaction	action;
 
 	pid = getpid();
-	printf("Server PID: %d\n", pid);
+	ft_printf("Server PID: %d\n", pid);
 	action.__sigaction_u.__sa_sigaction = recieve_sig;
 	sigemptyset(&action.sa_mask);
 	action.sa_flags = SA_SIGINFO;

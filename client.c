@@ -1,4 +1,7 @@
-#include "minitalk.h"
+#include <signal.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include "ft_printf/ft_printf.h"
 
 static int	check(int sign)
 {
@@ -12,7 +15,7 @@ int	ft_atoi(const char *str)
 {
 	int			i;
 	int			sign;
-	long long	result;
+	long long	result; 
 
 	i = 0;
 	sign = 1;
