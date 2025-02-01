@@ -38,7 +38,7 @@ void	action(int c, int *tmp, int si_pid, int reset)
 	}
 	if (c == '\0')
 	{
-		write(1, "\n", 1);
+		write(1, "\0", 1);
 		kill(si_pid, SIGUSR1);
 		*tmp = 0;
 	}

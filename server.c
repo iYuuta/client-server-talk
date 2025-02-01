@@ -4,7 +4,7 @@ void	action(int c, int *tmp)
 {
 	if (c == '\0')
 	{
-		write(1, "\n", 1);
+		write(1, "\0", 1);
 		*tmp = 0;
 	}
 	else

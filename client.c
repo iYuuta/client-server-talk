@@ -42,7 +42,7 @@ void	send_char(pid_t server_pid, char c)
 	bit = 0;
 	while (bit < 8)
 	{
-		if ((c & (0x01 << bit)) != 0)
+		if ((c & (0b00000001 << bit)) != 0)
 			kill(server_pid, SIGUSR1);
 		else
 			kill(server_pid, SIGUSR2);
