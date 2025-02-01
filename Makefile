@@ -14,7 +14,9 @@ CLIENT = client
 CLIENT_BONUS = client_bonus
 
 CFLAGS = -Wall -Wextra -Werror
-FT_PRINTF = ft_printf/*.c
+FT_PRINTF = ft_printf/ft_printf_utils.c ft_printf/ft_printf.c ft_printf/ft_putchar.c \
+			ft_printf/ft_putnbr_base.c ft_printf/ft_putnbr.c ft_printf/ft_putptr.c ft_printf/ft_putstr.c \
+
 CC = cc
 
 all: $(SERVER) $(CLIENT) 
@@ -33,11 +35,11 @@ $(CLIENT_BONUS): $(BONUS_CLIENT_OBJECTS)
 
 bonus: $(SERVER_BONUS) $(CLIENT_BONUS)
 
-%.o: %.c
+%.o: %.c minitalk.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf *.o
+	rm -rf $(SERVER_OBJECTS) $(CLIENT_OBJECTS) $(BONUS_SERVER_OBJECTS) $(BONUS_CLIENT_OBJECTS)
 
 fclean: clean
 	rm -rf $(SERVER) $(SERVER_BONUS)

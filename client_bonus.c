@@ -1,7 +1,6 @@
-#include <signal.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include "ft_printf/ft_printf.h"
+#include "minitalk.h"
+
+int	g_server_pid;
 
 static int	check(int sign)
 {
@@ -38,13 +37,14 @@ int	ft_atoi(const char *str)
 	return (result * sign);
 }
 
-void	recieve_confirmation(int sig)
+void	recieve_confirmation(int sig, struct __siginfo *info, void *context)
 {
-	if (sig == SIGUSR1)
+	if (sig == SIGUSR1 && info->si_pid == g_server_pid)
 	{
 		ft_printf("Message received\n");
 		exit(0);
 	}
+	(void)context;
 }
 
 void	send_char(pid_t server_pid, char c)
@@ -65,14 +65,19 @@ void	send_char(pid_t server_pid, char c)
 
 int	main(int ac, char **av)
 {
-	int	i;
+	int					i;
+	struct sigaction	info;
 
 	i = -1;
 	if (ac != 3)
 		return (0);
-	signal(SIGUSR1, recieve_confirmation);
+	info.__sigaction_u.__sa_sigaction = recieve_confirmation;
+	sigemptyset(&info.sa_mask);
+	info.sa_flags = SA_SIGINFO;
+	sigaction(SIGUSR1, &info, NULL);
+	g_server_pid = ft_atoi(av[1]);
 	while (av[2][++i])
-		send_char(ft_atoi(av[1]), av[2][i]);
+		send_char(g_server_pid, av[2][i]);
 	send_char(ft_atoi(av[1]), '\0');
 	while (1)
 		pause();
